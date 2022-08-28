@@ -15,32 +15,7 @@ pipeline {
 
 	stages {
 
-        stage('Build App') {
-            steps {
-                sh "mvn compile"
-				sh "mvn test"
-            }
-
-            post {
-                always {
-                    junit '**/target/surefire-reports/TEST-*.xml'
-                }
-            }
-        }
-
-        stage('Package') {
-            steps {                
-                sh "mvn package"
-            }
-
-            post {
-                success {
-                    archiveArtifacts artifacts: '**/target/**.jar', followSymlinks: false                  
-                }
-            }
-        }
-		
-		stage('Build') {
+        stage('Build') {
 
 			steps {
 				sh 'docker build -t abdullahkimrigh/java-maven-app:0.0.1 .'
@@ -64,16 +39,14 @@ pipeline {
         stage('Deploy') {
             steps {
                 sh 'aws configure set region us-east-2'
-				sh 'aws s3 cp ./target/**.jar s3://$AWS_S3_BUCKET/app.jar'
                 sh 'aws elasticbeanstalk create-application-version --application-name $AWS_EB_APP_NAME --version-label $AWS_EB_APP_VERSION --source-bundle S3Bucket=$AWS_S3_BUCKET,S3Key=$ARTIFACT_NAME'
                 sh 'aws elasticbeanstalk update-environment --application-name $AWS_EB_APP_NAME --environment-name $AWS_EB_ENVIRONMENT_NAME --version-label $AWS_EB_APP_VERSION'
             }
-	}
-    }
-	post {
-		always {
-			sh 'docker logout'
 		}
-	}
+			post {
+				always {
+					sh 'docker logout'
+				}
+			}
 
 }
