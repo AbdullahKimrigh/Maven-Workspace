@@ -1,66 +1,53 @@
 pipeline {
-    agent any
 
-    environment {
+	agent any
+
+	environment {
+		DOCKERHUB_CREDENTIALS=credentials('Abdullah-Dockerhub')
 		AWS_ACCESS_KEY_ID     = credentials('jenkins-aws-secret-key-id')
   		AWS_SECRET_ACCESS_KEY = credentials('jenkins-aws-secret-access-key')
-		ARTIFACT_NAME = 'app.jar'
-		AWS_S3_BUCKET = 'java-maven-app-1'
+		ARTIFACT_NAME = 'Dockerrun.aws.json'
+		AWS_S3_BUCKET = 'java-maven-app'
 		AWS_EB_APP_NAME = 'java-maven-app'
-        AWS_EB_ENVIRONMENT_NAME = 'Javamavenapp-env'
+        AWS_EB_ENVIRONMENT_NAME = 'Javamavenapp-docker-env'
         AWS_EB_APP_VERSION = "${BUILD_ID}"
-    }
+	}
 
-    stages {
-        stage('Validate') {
-            steps {
-                sh "mvn validate"
-                sh "mvn clean"
-            }
-        }
+	stages {
 
-         stage('Build') {
-            steps {
-                sh "mvn compile"
-            }
-        }
+        stage('Build') {
 
-        stage('Test') {
-            steps {
-                sh "mvn test"
-            }
+			steps {
+				sh 'docker build -t abdullahkimrigh/java-maven-app:0.0.1 .'
+			}
+		}
 
-            post {
-                always {
-                    junit '**/target/surefire-reports/TEST-*.xml'
-                }
-            }
-        }
+        stage('Login') {
 
-        stage('Package') {
-            steps {                
-                sh "mvn package"
-            }
+			steps {
+				sh 'echo $DOCKERHUB_CREDENTIALS_PSW | docker login -u $DOCKERHUB_CREDENTIALS_USR --password-stdin'
+			}
+		}
 
-            post {
-                success {
-                    archiveArtifacts artifacts: '**/target/**.jar', followSymlinks: false                  
-                }
-            }
-        }
+		stage('Push') {
 
-        stage('Publish Artifacts') {
-            steps {
-                sh "aws configure set region us-east-1"
-                sh "aws s3 cp ./target/**.jar s3://$AWS_S3_BUCKET/$ARTIFACT_NAME"               
-            }
-        }
+			steps {
+				sh 'docker push abdullahkimrigh/java-maven-app:0.0.1'
+			}
+		}
 
         stage('Deploy') {
             steps {
+                sh 'aws configure set region us-east-2'
                 sh 'aws elasticbeanstalk create-application-version --application-name $AWS_EB_APP_NAME --version-label $AWS_EB_APP_VERSION --source-bundle S3Bucket=$AWS_S3_BUCKET,S3Key=$ARTIFACT_NAME'
-                sh 'aws elasticbeanstalk update-environment --application-name $AWS_EB_APP_NAME --environment-name $AWS_EB_ENVIRONMENT_NAME --version-label $AWS_EB_APP_VERSION'                
+                sh 'aws elasticbeanstalk update-environment --application-name $AWS_EB_APP_NAME --environment-name $AWS_EB_ENVIRONMENT_NAME --version-label $AWS_EB_APP_VERSION'
             }
-        } 
+	}
     }
+	post {
+		always {
+			sh 'docker logout'
+		}
+	}
+
 }
