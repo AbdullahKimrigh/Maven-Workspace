@@ -1,4 +1,4 @@
-FROM openjdk:8-jdk-alpine
+FROM openjdk:18-jdk
 
 ARG JAR_FILE=LearningMaven/target/LearningMaven-0.0.1-SNAPSHOT.jar
 
