@@ -7,7 +7,7 @@ pipeline {
 		ARTIFACT_NAME = 'app.jar'
 		AWS_S3_BUCKET = 'java-maven-app'
 		AWS_EB_APP_NAME = 'java-maven-app'
-        AWS_EB_ENVIRONMENT_NAME = 'Javamavenapp-env-1'
+        AWS_EB_ENVIRONMENT_NAME = 'Javamavenapp-env'
         AWS_EB_APP_VERSION = "${BUILD_ID}"
     }
 
