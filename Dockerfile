@@ -1,4 +1,4 @@
-FROM maven:3.8.6-openjdk-11
+FROM openjdk:8-jdk-alpine
 
 COPY . app.jar
 
