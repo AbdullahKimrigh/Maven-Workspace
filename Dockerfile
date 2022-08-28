@@ -1,6 +1,6 @@
 FROM openjdk:8-jdk-alpine
 
-ARG JAR_FILE=LearningMaven/target/*.jar
+ARG JAR_FILE=LearningMaven/target/LearningMaven-0.0.1-SNAPSHOT.jar
 
 COPY ${JAR_FILE} app.jar
 
