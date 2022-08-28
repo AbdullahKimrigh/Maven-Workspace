@@ -7,7 +7,7 @@ pipeline {
 		AWS_ACCESS_KEY_ID     = credentials('jenkins-aws-secret-key-id')
   		AWS_SECRET_ACCESS_KEY = credentials('jenkins-aws-secret-access-key')
 		ARTIFACT_NAME = 'Dockerrun.aws.json'
-		AWS_S3_BUCKET = '2048-game-file'
+		AWS_S3_BUCKET = 'java-maven-app'
 		AWS_EB_APP_NAME = '2048-game'
         AWS_EB_ENVIRONMENT_NAME = '2048game-env'
         AWS_EB_APP_VERSION = "${BUILD_ID}"
@@ -18,7 +18,7 @@ pipeline {
         stage('Build') {
 
 			steps {
-				sh 'docker build -t abdullahkimrigh/2048-game:0.0.1 .'
+				sh 'docker build -t abdullahkimrigh/java-maven-app:0.0.1 .'
 			}
 		}
 
@@ -32,7 +32,7 @@ pipeline {
 		stage('Push') {
 
 			steps {
-				sh 'docker push abdullahkimrigh/2048-game:0.0.1'
+				sh 'docker push abdullahkimrigh/java-maven-app:0.0.1'
 			}
 		}
 

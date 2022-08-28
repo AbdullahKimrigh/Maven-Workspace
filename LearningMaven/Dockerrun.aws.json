@@ -1,7 +1,7 @@
 {
     "AWSEBDockerrunVersion": "1",
     "Image": {
-      "Name": "registry.hub.docker.com/abdullahkimrigh/2048-game:0.0.1"
+      "Name": "registry.hub.docker.com/abdullahkimrigh/java-maven-app:0.0.1"
     },
     "Ports": [
       {

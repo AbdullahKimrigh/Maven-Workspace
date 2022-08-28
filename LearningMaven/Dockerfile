@@ -1,5 +1,5 @@
 FROM maven:3.8.6-openjdk-11
 
-COPY . /usr/share/nginx/html
+COPY . app.jar
 
 EXPOSE 80
