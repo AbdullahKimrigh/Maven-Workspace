@@ -1,0 +1,32 @@
+version: 0.2
+
+phases:
+  install:
+    on-failure: ABORT
+    runtime-versions:
+      java: corretto8
+  pre_build:
+    on-failure: ABORT
+    commands:
+    - echo Build start on 'date'
+    - mvn clean
+    - mvn package
+    - echo Build ends on 'date'
+  build:
+    on-failure: ABORT
+    commands:
+    - echo Build start on 'date'
+    - docker build -t abdullahkimrigh/java-maven-app:0.0.1 .
+    - docker push abdullahkimrigh/java-maven-app:0.0.1
+    - echo Build ends on 'date'
+  post_build:
+    on-failure: ABORT
+    commands:
+    - echo Build start on 'date'
+    - mv target/*.jar ROOT.jar
+    - echo Build ends on 'date'
+
+artifacts:
+  files:
+    - ROOT.jar
+  name: java-maven-app
