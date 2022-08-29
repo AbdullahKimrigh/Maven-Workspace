@@ -16,7 +16,7 @@ pipeline {
 	stages {
 
 		stage('mvn build') {
-			stpes {
+			steps {
 				sh 'mvn clean'
 				sh 'mvn package'
 			}
