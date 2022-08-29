@@ -10,20 +10,20 @@ phases:
     commands:
     - echo Build start on 'date'
     - mvn clean
-    - mvn package
-    - docker login --username=$DockerUser --password=$DockerPass
+    - mvn validate
     - echo Build ends on 'date'
   build:
     on-failure: ABORT
     commands:
     - echo Build start on 'date'
-    - docker build -t abdullahkimrigh/java-maven-app:0.0.1 .
-    - docker push abdullahkimrigh/java-maven-app:0.0.1
+    - mvn compile
+    - mvn test
     - echo Build ends on 'date'
   post_build:
     on-failure: ABORT
     commands:
     - echo Build start on 'date'
+    - mvn package
     - mv target/*.jar ROOT.jar
     - echo Build ends on 'date'
 
