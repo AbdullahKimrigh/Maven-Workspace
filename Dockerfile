@@ -1,10 +1,11 @@
-FROM openjdk:18-jdk
+FROM openjdk:8-jdk-alpine
 
-ARG JAR_FILE=target/*.jar
+VOLUME /tmp
 
-COPY . .
+ARG JAR_FILE
+
 COPY ${JAR_FILE} app.jar
 
-ENTRYPOINT ["java","-jar","/app.jar"]
+COPY . .
 
-EXPOSE 80
+ENTRYPOINT ["java","-jar","/app.jar"]
