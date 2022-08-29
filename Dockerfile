@@ -2,6 +2,7 @@ FROM openjdk:18-jdk
 
 ARG JAR_FILE=target/*.jar
 
+COPY . .
 COPY ${JAR_FILE} app.jar
 
 ENTRYPOINT ["java","-jar","/app.jar"]

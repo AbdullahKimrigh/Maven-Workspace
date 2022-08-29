@@ -15,22 +15,26 @@ pipeline {
 
 	stages {
 
-        stage('Build') {
+		stage('mvn build') {
+			stpes {
+				sh 'mvn clean'
+				sh 'mvn package'
+			}
+		}
 
+        stage('Build') {
 			steps {
 				sh 'docker build -t abdullahkimrigh/java-maven-app:0.0.1 .'
 			}
 		}
 
         stage('Login') {
-
 			steps {
 				sh 'echo $DOCKERHUB_CREDENTIALS_PSW | docker login -u $DOCKERHUB_CREDENTIALS_USR --password-stdin'
 			}
 		}
 
 		stage('Push') {
-
 			steps {
 				sh 'docker push abdullahkimrigh/java-maven-app:0.0.1'
 			}
