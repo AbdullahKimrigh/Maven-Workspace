@@ -11,7 +11,7 @@
 	
 	<groupId>com.codingdojo</groupId>
 	<artifactId>LearningMaven</artifactId>
-	<version>0.0.1-SNAPSHOT</version>
+	<version>0.1</version>
 	<name>LearningMaven</name>
 	
 	<description>Demo project for Spring Boot</description>
@@ -32,6 +32,18 @@
 		</dependency>
 	</dependencies>
 
+<distributionManagement>
+    <repository>
+      <id>nexus</id>
+      <name>Releases</name>
+      <url>http://ec2-18-118-213-245.us-east-2.compute.amazonaws.com:8081/repository/java-maven-release/</url>
+    </repository>
+    <snapshotRepository>
+      <id>nexus</id>
+      <name>Snapshot</name>
+      <url>http://ec2-18-118-213-245.us-east-2.compute.amazonaws.com:8081/repository/java-maven-snapshot/</url>
+    </snapshotRepository>
+  </distributionManagement>
 	<build>
 		<plugins>
 			<plugin>
