@@ -11,7 +11,7 @@
 	
 	<groupId>com.codingdojo</groupId>
 	<artifactId>LearningMaven</artifactId>
-	<version>0.3-TeamCity</version>
+	<version>0.3</version>
 	<name>LearningMaven</name>
 	
 	<description>Demo project for Spring Boot</description>
